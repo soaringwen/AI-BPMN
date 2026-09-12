@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+                  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+                  xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+                  id="Definitions_simple_approval"
+                  targetNamespace="urn:bank:ai-bpmn">
+  <bpmn:collaboration id="Collaboration_simple_approval">
+    <bpmn:participant id="pool_1" name="审批机构" processRef="process_simple_approval"/>
+  </bpmn:collaboration>
+  <bpmn:process id="process_simple_approval" name="简单审批流程" isExecutable="false">
+    <bpmn:laneSet id="LaneSet_simple_approval">
+      <bpmn:lane id="lane_applicant" name="申请人">
+        <bpmn:flowNodeRef>event_start_1</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>task_submit_1</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>event_end_1</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="lane_approver" name="审批人">
+        <bpmn:flowNodeRef>task_approve_1</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>gateway_result_1</bpmn:flowNodeRef>
+      </bpmn:lane>
+    </bpmn:laneSet>
+    <bpmn:startEvent id="event_start_1" name="开始">
+      <bpmn:outgoing>flow_1</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:userTask id="task_submit_1" name="提交申请">
+      <bpmn:incoming>flow_1</bpmn:incoming>
+      <bpmn:outgoing>flow_2</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="task_approve_1" name="审批">
+      <bpmn:incoming>flow_2</bpmn:incoming>
+      <bpmn:outgoing>flow_3</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="gateway_result_1" name="是否通过">
+      <bpmn:incoming>flow_3</bpmn:incoming>
+      <bpmn:outgoing>flow_4</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:endEvent id="event_end_1" name="结束">
+      <bpmn:incoming>flow_4</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="flow_1" sourceRef="event_start_1" targetRef="task_submit_1"/>
+    <bpmn:sequenceFlow id="flow_2" sourceRef="task_submit_1" targetRef="task_approve_1"/>
+    <bpmn:sequenceFlow id="flow_3" sourceRef="task_approve_1" targetRef="gateway_result_1"/>
+    <bpmn:sequenceFlow id="flow_4" name="通过" sourceRef="gateway_result_1" targetRef="event_end_1"/>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_simple_approval">
+    <bpmndi:BPMNPlane id="BPMNPlane_simple_approval" bpmnElement="Collaboration_simple_approval">
+      <bpmndi:BPMNShape id="Shape_event_start_1" bpmnElement="event_start_1">
+        <dc:Bounds x="100" y="100" width="36" height="36"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_task_submit_1" bpmnElement="task_submit_1">
+        <dc:Bounds x="200" y="78" width="100" height="80"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_task_approve_1" bpmnElement="task_approve_1">
+        <dc:Bounds x="360" y="78" width="100" height="80"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_gateway_result_1" bpmnElement="gateway_result_1">
+        <dc:Bounds x="520" y="93" width="50" height="50"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_event_end_1" bpmnElement="event_end_1">
+        <dc:Bounds x="640" y="100" width="36" height="36"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Edge_flow_1" bpmnElement="flow_1">
+        <di:waypoint x="136" y="118"/>
+        <di:waypoint x="200" y="118"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_flow_2" bpmnElement="flow_2">
+        <di:waypoint x="300" y="118"/>
+        <di:waypoint x="360" y="118"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_flow_3" bpmnElement="flow_3">
+        <di:waypoint x="460" y="118"/>
+        <di:waypoint x="520" y="118"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_flow_4" bpmnElement="flow_4">
+        <di:waypoint x="570" y="118"/>
+        <di:waypoint x="640" y="118"/>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

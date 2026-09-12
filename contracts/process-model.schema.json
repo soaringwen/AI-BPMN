@@ -1,0 +1,140 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://aibpmn.local/contracts/process-model.schema.json",
+  "title": "ProcessModel",
+  "type": "object",
+  "required": ["schemaVersion", "modelId", "process", "pools", "lanes", "nodes", "sequenceFlows", "messageFlows", "layout", "metadata"],
+  "properties": {
+    "schemaVersion": { "type": "string", "const": "1.0" },
+    "modelId": { "type": "string", "minLength": 1 },
+    "process": {
+      "type": "object",
+      "required": ["id", "name", "executable"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "name": { "type": "string" },
+        "description": { "type": ["string", "null"] },
+        "executable": { "type": "boolean", "const": false }
+      },
+      "additionalProperties": false
+    },
+    "pools": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "processRef"],
+        "properties": {
+          "id": { "type": "string", "minLength": 1 },
+          "name": { "type": "string" },
+          "processRef": { "type": "string" }
+        },
+        "additionalProperties": false
+      }
+    },
+    "lanes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "poolId", "nodeRefs"],
+        "properties": {
+          "id": { "type": "string", "minLength": 1 },
+          "name": { "type": "string" },
+          "poolId": { "type": "string" },
+          "nodeRefs": { "type": "array", "items": { "type": "string" } }
+        },
+        "additionalProperties": false
+      }
+    },
+    "nodes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "type", "name", "laneId", "documentation", "properties"],
+        "properties": {
+          "id": { "type": "string", "minLength": 1 },
+          "type": {
+            "type": "string",
+            "enum": ["START_EVENT", "END_EVENT", "USER_TASK", "SERVICE_TASK", "MANUAL_TASK", "BUSINESS_RULE_TASK", "EXCLUSIVE_GATEWAY", "PARALLEL_GATEWAY", "INCLUSIVE_GATEWAY", "SUB_PROCESS", "INTERMEDIATE_CATCH_EVENT", "INTERMEDIATE_THROW_EVENT"]
+          },
+          "name": { "type": ["string", "null"] },
+          "laneId": { "type": ["string", "null"] },
+          "documentation": { "type": ["string", "null"] },
+          "properties": { "type": "object" }
+        },
+        "additionalProperties": false
+      }
+    },
+    "sequenceFlows": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "sourceId", "targetId", "name", "condition", "defaultFlow"],
+        "properties": {
+          "id": { "type": "string", "minLength": 1 },
+          "sourceId": { "type": "string" },
+          "targetId": { "type": "string" },
+          "name": { "type": ["string", "null"] },
+          "condition": { "type": ["string", "null"] },
+          "defaultFlow": { "type": "boolean" }
+        },
+        "additionalProperties": false
+      }
+    },
+    "messageFlows": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "sourceId", "targetId", "name"],
+        "properties": {
+          "id": { "type": "string" },
+          "sourceId": { "type": "string" },
+          "targetId": { "type": "string" },
+          "name": { "type": ["string", "null"] }
+        },
+        "additionalProperties": false
+      }
+    },
+    "layout": {
+      "type": "object",
+      "required": ["nodes", "flows"],
+      "properties": {
+        "nodes": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "required": ["x", "y", "width", "height"],
+            "properties": {
+              "x": { "type": "number" },
+              "y": { "type": "number" },
+              "width": { "type": "number" },
+              "height": { "type": "number" }
+            },
+            "additionalProperties": false
+          }
+        },
+        "flows": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["x", "y"],
+              "properties": { "x": { "type": "number" }, "y": { "type": "number" } },
+              "additionalProperties": false
+            }
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "metadata": {
+      "type": "object",
+      "properties": {
+        "createdBy": { "type": ["string", "null"] },
+        "generationPrompt": { "type": ["string", "null"] }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

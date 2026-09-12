@@ -1,0 +1,17 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://aibpmn.local/contracts/modification-operation.schema.json",
+  "title": "ModelOperation",
+  "type": "object",
+  "required": ["operationId", "type", "payload"],
+  "properties": {
+    "operationId": { "type": "string", "minLength": 1 },
+    "type": {
+      "type": "string",
+      "enum": ["ADD_NODE", "UPDATE_NODE", "DELETE_NODE", "MOVE_NODE", "ADD_FLOW", "UPDATE_FLOW", "DELETE_FLOW", "ADD_POOL", "UPDATE_POOL", "DELETE_POOL", "ADD_LANE", "UPDATE_LANE", "DELETE_LANE", "ADD_BRANCH", "ADD_PARALLEL_BRANCH"]
+    },
+    "targetId": { "type": ["string", "null"] },
+    "payload": { "type": "object" }
+  },
+  "additionalProperties": false
+}

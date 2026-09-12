@@ -1,0 +1,34 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://aibpmn.local/contracts/workspace.schema.json",
+  "title": "WorkspaceState",
+  "type": "object",
+  "required": ["workspaceId", "name", "revision", "processModel", "bpmnXml", "conversation", "history", "historyIndex", "dirty", "lastModifiedAt"],
+  "properties": {
+    "workspaceId": { "type": "string" },
+    "name": { "type": "string" },
+    "revision": { "type": "integer", "minimum": 0 },
+    "processModel": { "type": ["object", "null"], "$ref": "process-model.schema.json" },
+    "bpmnXml": { "type": ["string", "null"] },
+    "conversation": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "role", "content", "createdAt"],
+        "properties": {
+          "id": { "type": "string" },
+          "role": { "type": "string", "enum": ["USER", "ASSISTANT", "SYSTEM"] },
+          "content": { "type": "string" },
+          "createdAt": { "type": "string" }
+        },
+        "additionalProperties": false
+      }
+    },
+    "pendingChange": { "type": ["object", "null"] },
+    "history": { "type": "array" },
+    "historyIndex": { "type": "integer" },
+    "dirty": { "type": "boolean" },
+    "lastModifiedAt": { "type": "string" }
+  },
+  "additionalProperties": false
+}
